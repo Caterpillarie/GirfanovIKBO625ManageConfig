@@ -1,0 +1,9 @@
+#!/bin/bash
+
+text="$1"
+len=${#text}
+dashes=$(printf '%*s' $((len + 2)) '' | tr ' ' '-')
+
+echo "+$dashes+"
+echo "| $text |"
+echo "+$dashes+"

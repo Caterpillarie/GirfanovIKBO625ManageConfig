@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ ! -f "$1" ]; then
+	echo "Couldn't find file"
+	exit 1
+fi
+
+chmod 755 "$1"
+sudo cp "$1" /usr/local/bin/
+echo "Done"

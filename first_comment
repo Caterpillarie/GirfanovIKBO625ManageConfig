@@ -1,0 +1,11 @@
+#!/bin/bash
+
+find . -type f \( -name "*.c" -o -name "*.js" -o -name "*.py" \) | while read -r file; do
+    first_line=$(head -n 1 "$file")
+  
+    if [[ "$first_line" =~ ^[[:space:]]*(#|//|/\*) ]]; then
+        echo "true, $file has comment in first line"
+    else
+        echo "false, $file hasn't comment in first line"
+    fi
+done
