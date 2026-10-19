@@ -1,0 +1,4 @@
+ls
+cd test $TEMP
+unknown_command unknown_arg1
+exit
