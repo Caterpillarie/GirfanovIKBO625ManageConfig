@@ -1,0 +1,5 @@
+Started. Type 'exit' to quit
+girfa@MSI:~$ ls []
+girfa@MSI:~$ cd [test, C:\Users\girfa\AppData\Local\Temp]
+girfa@MSI:~$ unknown_command command not found
+girfa@MSI:~$ Exiting...
