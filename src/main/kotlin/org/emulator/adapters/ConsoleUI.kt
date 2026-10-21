@@ -1,23 +1,24 @@
 package org.emulator.adapters
 
+import org.emulator.data.InputSource
 import org.emulator.data.UI
-import java.lang.Exception
 import java.net.InetAddress
 
-class ConsoleUI : UI {
+class ConsoleUI(initialSource: InputSource) : UI {
+    override var inputSource = initialSource
     private val prompt: String
         get() {
             val user = System.getProperty("user.name")
             val host = try {
                 InetAddress.getLocalHost().hostName
-            } catch (e: Exception) { "localhost" }
+            } catch (_: Exception) { "localhost" }
 //            val cwd = System.getProperty("user.dir")
             return "$user@$host:~$"
         }
 
     override fun input(): String? {
         print("$prompt ")
-        return readlnOrNull()
+        return inputSource.nextLine()
     }
 
     override fun printOutput(message: String) =
