@@ -1,0 +1,3 @@
+ls                      //no args test
+cd test $TEMP           //envvar test
+unknown_command unknown_arg1        //unknown test

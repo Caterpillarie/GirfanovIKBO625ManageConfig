@@ -5,7 +5,7 @@ import org.emulator.data.EnvVarService
 class EnvVarExpandUseCase(
     private val envService: EnvVarService
 ) {
-    fun expand(input: String): String =
+    operator fun invoke(input: String): String =
         Regex("\\$(\\w+)").replace(input) { matchResult ->
             envService.envValue(matchResult.groupValues[1]) ?: matchResult.value
     }
