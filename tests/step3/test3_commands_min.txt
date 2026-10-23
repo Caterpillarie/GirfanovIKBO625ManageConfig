@@ -1,0 +1,5 @@
+ls                      //show current directory's content
+cd test           	//entering test directory
+unknown_command unknown_arg1        //unknown test
+vfs-init                //reentering default vfs
+ls                      //show content again
