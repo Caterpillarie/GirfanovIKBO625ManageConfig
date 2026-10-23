@@ -10,6 +10,7 @@ import org.emulator.adapters.ConsoleUI
 import org.emulator.adapters.FileInputSource
 import org.emulator.adapters.ScriptRunnerImpl
 import org.emulator.adapters.SystemEnvService
+import org.emulator.adapters.VfsService
 import org.emulator.data.InputSource
 import org.emulator.data.ScriptRunner
 import org.emulator.domain.ConfigParseUseCase
@@ -17,17 +18,27 @@ import org.emulator.domain.ScriptCheckUseCase
 
 fun main(args: Array<String>) {
     val initialSource: InputSource = ConsoleInputSource()
-    val ui: UI = ConsoleUI(initialSource)
+    val configParser = ConfigParseUseCase()
+    val appConfig = configParser(args)
+    val vfsService = try {
+        VfsService(
+            initialZipPath = appConfig.vfsPath,
+            defaultZipPath = "test.zip"
+        )
+    } catch (e: Exception) {
+        ConsoleUI(initialSource).printOutput("Error: vfs is not found\n")
+        return
+    }
+    val ui: UI = ConsoleUI(initialSource, vfsService::currentPath)
+    ui.printOutput("Started. Type 'exit' to quit\n")
     val commandExecutor = CommandExecuteUseCase(
         expander = EnvVarExpandUseCase(
             SystemEnvService(),
         ),
-        handler = CommandHandlerImpl(),
+        handler = CommandHandlerImpl(
+            vfsService = vfsService
+        )
     )
-    val configParser = ConfigParseUseCase()
-    val appConfig = configParser(args)
-    ui.printOutput("${appConfig}\n")
-    ui.printOutput("Started. Type 'exit' to quit\n")
     appConfig.scriptPath.let {
         when (ScriptCheckUseCase()(it)) {
             true -> {
@@ -58,8 +69,18 @@ fun main(args: Array<String>) {
                 ui.printOutput("Exiting...\n")
                 break
             }
-            is CommandResult.Success -> ui.printOutput("${commandResult.message}\n")
-            is CommandResult.Error -> ui.printOutput("${commandResult.message}\n")
+            is CommandResult.Success -> ui.printOutput(
+                if (commandResult.message.isNotBlank())
+                    "${commandResult.message}\n"
+                else
+                    ""
+            )
+            is CommandResult.Error -> ui.printOutput(
+                if (commandResult.message.isNotBlank())
+                    "${commandResult.message}\n"
+                else
+                    ""
+            )
         }
     }
 }

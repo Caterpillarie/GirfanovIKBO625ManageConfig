@@ -1,0 +1,16 @@
+ls                      //show current directory's content
+cd test2           	//entering test directory
+ls                      //show next directory's content
+cd /test2/inner_test/deepest_test    //testing from root folder
+ls
+cd test2/inner_test/deepest_test    
+unknown_command unknown_arg1        //unknown test
+vfs-init                //reentering default vfs
+ls                      //show content again
+ls test2/inner_test      //show content not from current folder
+cd test2/inner_test      //testing from current folder
+ls
+cd deepest_test/theabyss   //testing from curr again
+ls
+cd ..                   //test ..
+ls

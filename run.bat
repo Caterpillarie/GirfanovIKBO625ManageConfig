@@ -1,1 +1,1 @@
-java -jar shellemulator.jar
+java -jar shellemulator.jar --vfs test.zip

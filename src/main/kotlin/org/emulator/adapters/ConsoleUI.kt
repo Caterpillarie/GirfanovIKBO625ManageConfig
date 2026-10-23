@@ -4,7 +4,10 @@ import org.emulator.data.InputSource
 import org.emulator.data.UI
 import java.net.InetAddress
 
-class ConsoleUI(initialSource: InputSource) : UI {
+class ConsoleUI(
+    initialSource: InputSource,
+    var currentPath: () -> String = { System.getProperty("user.dir") }
+) : UI {
     override var inputSource = initialSource
     private val prompt: String
         get() {
@@ -12,8 +15,7 @@ class ConsoleUI(initialSource: InputSource) : UI {
             val host = try {
                 InetAddress.getLocalHost().hostName
             } catch (_: Exception) { "localhost" }
-//            val cwd = System.getProperty("user.dir")
-            return "$user@$host:~$"
+            return "$user@$host:${currentPath()}$"
         }
 
     override fun input(): String? {
